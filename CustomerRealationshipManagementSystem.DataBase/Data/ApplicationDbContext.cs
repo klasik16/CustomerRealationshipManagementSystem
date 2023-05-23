@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Net;
 
-public class UserDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -11,7 +11,7 @@ public class UserDbContext : DbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<ProfilePicture> ProfilePictures { get; set; }
 
-    public UserDbContext(DbContextOptions<UserDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }

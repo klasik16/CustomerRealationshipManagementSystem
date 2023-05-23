@@ -1,4 +1,6 @@
-﻿public class AuthService : IAuthService
+﻿using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
+
+public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
@@ -9,21 +11,28 @@
         _jwtService = jwtService;
     }
 
-    public bool Authenticate(string username, string password)
+    public string Authenticate(string username, string password)
     {
         // Authenticate the user based on the provided username and password
         var user = _userService.GetUserByUsername(username);
         if (user == null || user.Password != password)
         {
-            return false;
+            return null; // Authentication failed
         }
 
         // Generate JWT token
         var token = _jwtService.GenerateToken(user);
 
-        // Store the token in user's session or return it as part of the authentication response
-        // ...
+        return token; // Return the generated token
+    }
 
-        return true;
+    public LoginResponseDTO Login(string username, string password)
+    {
+        throw new NotImplementedException();
+    }
+
+    bool IAuthService.Authenticate(string username, string password)
+    {
+        throw new NotImplementedException();
     }
 }

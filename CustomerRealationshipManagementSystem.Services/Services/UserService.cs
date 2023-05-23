@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class UserService : IUserService
 {
-    private readonly UserDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
 
     public UserService(IDbContext dbContext)
     {
-        _dbContext = (UserDbContext?)dbContext;
+        _dbContext = (ApplicationDbContext?)dbContext;
     }
 
     public IEnumerable<User> GetUsers()
@@ -63,5 +63,10 @@ public class UserService : IUserService
         }
 
         return false;
+    }
+
+    public User GetUserByUsername(string username)
+    {
+        throw new NotImplementedException();
     }
 }

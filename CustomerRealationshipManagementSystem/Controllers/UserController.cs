@@ -1,6 +1,5 @@
 ﻿using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
 using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
-using CustomerRealationshipManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]

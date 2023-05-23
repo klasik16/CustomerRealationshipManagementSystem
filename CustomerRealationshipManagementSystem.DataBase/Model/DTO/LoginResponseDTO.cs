@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace CustomerRealationshipManagementSystem.DataBase.Model.DTO
 {
-    public class LoginResponseDto
+    public class LoginResponseDTO
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
 
-        public LoginResponseDto(bool isSuccess, string message)
+        public LoginResponseDTO(bool isSuccess, string message)
         {
             IsSuccess = isSuccess;
             Message = message;
         }
 
-        public LoginResponseDto(bool isSuccess)
+        public LoginResponseDTO(bool isSuccess)
         {
             IsSuccess = isSuccess;
         }

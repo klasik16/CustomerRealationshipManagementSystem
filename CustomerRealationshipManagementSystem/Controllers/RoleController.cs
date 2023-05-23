@@ -33,7 +33,7 @@ public class RoleController : ControllerBase
     public ActionResult<Role> CreateRole(Role role)
     {
         var createdRole = _roleService.CreateRole(role);
-        return CreatedAtAction(nameof(GetRoleById), new { id = createdRole.RoleId }, createdRole);
+        return CreatedAtAction(nameof(GetRoleById), new { id = 5 }, createdRole);
     }
 
     [HttpPut("{id}")]

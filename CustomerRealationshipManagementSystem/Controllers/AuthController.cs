@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -11,10 +12,9 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost("login")]
-    public ActionResult<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
+    public ActionResult Login([FromBody] UserLoginDTO loginRequest)
     {
-        var loginResponse = _authService.Login(loginRequest);
+        var loginResponse = _authService.Login(loginRequest.Username,loginRequest.Password);
         if (!loginResponse.IsSuccess)
             return Unauthorized(loginResponse.Message);
 
