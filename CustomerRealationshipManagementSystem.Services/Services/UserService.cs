@@ -12,12 +12,12 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetUsers()
     {
-        return _dbContext.Users.Include(u => u.Address).Include(u => u.ProfilePicture).ToList();
+        return _dbContext.Users.Include(u => u.Address).ToList();
     }
 
     public User GetUserById(int id)
     {
-        return _dbContext.Users.Include(u => u.Address).Include(u => u.ProfilePicture).FirstOrDefault(u => u.UserId == id);
+        return _dbContext.Users.Include(u => u.Address).FirstOrDefault(u => u.UserId == id);
     }
 
     public User CreateUser(User user)

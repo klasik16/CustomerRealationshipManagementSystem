@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,5 +20,8 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 
         // Navigation property
         public virtual User? User { get; set; }
+        //public IFormFile? ImageBytes { get; set; }
+
+
     }
 }

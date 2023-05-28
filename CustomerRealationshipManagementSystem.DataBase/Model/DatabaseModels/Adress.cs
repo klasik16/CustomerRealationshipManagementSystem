@@ -10,7 +10,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
     public class Address
     {
         [Key]
-        public int AddressId { get; set; }
+        public int User { get; set; }
 
         [MaxLength(100)]
         public string? City { get; set; }
@@ -23,11 +23,5 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 
         [MaxLength(10)]
         public string? ApartmentNumber { get; set; }
-
-        // Foreign key
-        public int UserId { get; set; }
-
-        // Navigation property
-        public virtual User? User { get; set; }
     }
 }

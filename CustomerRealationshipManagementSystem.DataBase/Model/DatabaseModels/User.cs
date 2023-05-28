@@ -43,6 +43,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
         // Navigation properties
         public virtual ICollection<UserRole>? UserRoles { get; set; }
         public virtual Address? Address { get; set; }
-        public virtual IFormFile? ProfilePicture { get; set; }
+       // public virtual IFormFile? ProfilePicture { get; set; }
+
     }
 }
