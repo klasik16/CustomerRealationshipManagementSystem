@@ -17,7 +17,7 @@ public class AuthService : IAuthService
         var user = _userService.GetUserByUsername(username);
         if (user == null || user.Password != password)
         {
-            return null; // Authentication failed
+            return "5"; // Authentication failed
         }
 
         // Generate JWT token
@@ -32,6 +32,11 @@ public class AuthService : IAuthService
     }
 
     bool IAuthService.Authenticate(string username, string password)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<LoginResponseDTO> IAuthService.Login(string username, string password)
     {
         throw new NotImplementedException();
     }

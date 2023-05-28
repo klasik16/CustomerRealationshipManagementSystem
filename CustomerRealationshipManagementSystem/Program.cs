@@ -1,9 +1,4 @@
 // Import necessary namespaces
-using CustomerRealationshipManagementSystem.DataBase.Data;
-using CustomerRealationshipManagementSystem.DataBase.Interfaces;
-using CustomerRealationshipManagementSystem.DataBase.Repositories;
-using CustomerRealationshipManagementSystem.Services.Interfaces;
-using CustomerRealationshipManagementSystem.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -26,12 +21,24 @@ builder.Services.AddEndpointsApiExplorer();
 SetUpSwagger(builder.Services);
 
 // Set up JWT authentication
-SetUpAuthentication(builder.Services);
+SetUpAuthentication(builder.Services, config);
 
 // Add necessary services and repositories
 builder.Services.AddDbContext<ApplicationDbContext>(
     o => o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
+// Register services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+
+// Register DbContext
+//builder.Services.AddScoped<IDbContext, UserService>();
+
+// Register repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -51,7 +58,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-// Function to set up Swagger with JWT authentication
+//Function to set up Swagger with JWT authentication
 void SetUpSwagger(IServiceCollection services)
 {
     services.AddSwaggerGen(options =>
@@ -83,9 +90,9 @@ void SetUpSwagger(IServiceCollection services)
 }
 
 // Function to set up JWT authentication
-void SetUpAuthentication(IServiceCollection services)
+void SetUpAuthentication(IServiceCollection services, IConfiguration config)
 {
-    services.AddAuthentication(options =>
+    _ = services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -99,7 +106,7 @@ void SetUpAuthentication(IServiceCollection services)
             ValidateIssuerSigningKey = true,
             ValidIssuer = config["JWT:ValidIssuer"],
             ValidAudience = config["JWT:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Token"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(s: config["JWT:Token"]))
         };
     });
 }

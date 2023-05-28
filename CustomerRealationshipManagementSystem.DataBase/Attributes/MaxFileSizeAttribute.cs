@@ -16,7 +16,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Attributes
             _maxFileSize = maxFileSize;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value is IFormFile file)
             {
@@ -26,7 +26,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Attributes
                 }
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }

@@ -12,12 +12,12 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
         [Key]
         public int ProfilePictureId { get; set; }
 
-        public byte[] ImageData { get; set; }
+        public byte[]? ImageData { get; set; }
 
         // Foreign key
         public int UserId { get; set; }
 
         // Navigation property
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

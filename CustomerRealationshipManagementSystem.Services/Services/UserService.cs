@@ -5,9 +5,9 @@ public class UserService : IUserService
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public UserService(IDbContext dbContext)
+    public UserService(ApplicationDbContext dbContext)
     {
-        _dbContext = (ApplicationDbContext?)dbContext;
+        _dbContext = dbContext;
     }
 
     public IEnumerable<User> GetUsers()
@@ -66,6 +66,11 @@ public class UserService : IUserService
     }
 
     public User GetUserByUsername(string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<User> Authenticate(string username, string password)
     {
         throw new NotImplementedException();
     }

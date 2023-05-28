@@ -13,21 +13,21 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
         public int AddressId { get; set; }
 
         [MaxLength(100)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [MaxLength(100)]
-        public string Street { get; set; }
+        public string? Street { get; set; }
 
         [MaxLength(10)]
-        public string BuildingNumber { get; set; }
+        public string? BuildingNumber { get; set; }
 
         [MaxLength(10)]
-        public string ApartmentNumber { get; set; }
+        public string? ApartmentNumber { get; set; }
 
         // Foreign key
         public int UserId { get; set; }
 
         // Navigation property
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

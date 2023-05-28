@@ -16,7 +16,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Attributes
             _allowedExtensions = allowedExtensions;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value is IFormFile file)
             {
@@ -27,7 +27,12 @@ namespace CustomerRealationshipManagementSystem.DataBase.Attributes
                 }
             }
 
-            return ValidationResult.Success;
+            if (value is null)
+            {
+                // Handle the case where the value is null
+                return new ValidationResult("The value cannot be null."); // or return an appropriate ValidationResult
+            }
+            return ValidationResult.Success!;
         }
     }
 }

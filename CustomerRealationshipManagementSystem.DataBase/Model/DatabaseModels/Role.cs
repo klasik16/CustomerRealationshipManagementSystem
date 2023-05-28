@@ -14,9 +14,9 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         // Navigation properties
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<UserRole>? UserRoles { get; set; }
     }
 }

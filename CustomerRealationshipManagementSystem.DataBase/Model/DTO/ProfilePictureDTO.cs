@@ -8,6 +8,6 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DTO
 {
     public class ProfilePictureDTO
     {
-        public byte[] ImageData { get; set; }
+        public byte[]? ImageData { get; set; }
     }
 }

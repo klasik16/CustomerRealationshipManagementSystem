@@ -1,6 +1,9 @@
-﻿using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+﻿using Azure;
+using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
 using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -30,7 +33,16 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPost]
+    [HttpPost("upload-image")]
+    public IActionResult UploadImage(IFormFile imageFile)
+    {
+        // Handle the image upload logic here
+        // Save the image and associate it with the user
+
+        // Return appropriate response
+        return Ok("Image uploaded successfully");
+    }
+
     public ActionResult<User> CreateUser(UserSignupDTO userSignupDto)
     {
         var user = new User
@@ -44,10 +56,10 @@ public class UserController : ControllerBase
             PhoneNumber = userSignupDto.PhoneNumber,
             Address = new Address
             {
-                City = userSignupDto.City,
-                Street = userSignupDto.Street,
-                BuildingNumber = userSignupDto.BuildingNumber,
-                ApartmentNumber = userSignupDto.ApartmentNumber
+                City = userSignupDto.Address.City,
+                Street = userSignupDto.Address.Street,
+                BuildingNumber = userSignupDto.Address.BuildingNumber,
+                ApartmentNumber = userSignupDto.Address.ApartmentNumber
             }
         };
 

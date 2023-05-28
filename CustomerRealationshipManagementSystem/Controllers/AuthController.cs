@@ -1,23 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace CustomerRealationshipManagementSystem.Controllers
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
+    [ApiController]
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
     {
-        _authService = authService;
-    }
+        private readonly IAuthService _authService;
 
-    public ActionResult Login([FromBody] UserLoginDTO loginRequest)
-    {
-        var loginResponse = _authService.Login(loginRequest.Username,loginRequest.Password);
-        if (!loginResponse.IsSuccess)
-            return Unauthorized(loginResponse.Message);
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
-        return Ok(loginResponse);
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponseDTO>> Login(UserLoginDTO loginRequest)
+        {
+            var loginResponse = await _authService.Login(loginRequest.Username, loginRequest.Password);
+            if (loginResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(loginResponse);
+        }
+
+        //[HttpPost("register")]
+        //public async Task<ActionResult<UserDTO>> Register(RegisterRequestDTO registerRequest)
+        //{
+        //    var registrationResponse = await _authService.Register(registerRequest);
+        //    if (!registrationResponse.IsSuccess)
+        //        return BadRequest(registrationResponse.Message);
+
+        //    return CreatedAtAction(nameof(Login), new { username = registerRequest.Username }, registrationResponse.Data);
+        //}
     }
 }
