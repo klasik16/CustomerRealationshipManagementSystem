@@ -26,15 +26,5 @@ namespace CustomerRealationshipManagementSystem.Controllers
 
             return Ok(loginResponse);
         }
-
-        //[HttpPost("register")]
-        //public async Task<ActionResult<UserDTO>> Register(RegisterRequestDTO registerRequest)
-        //{
-        //    var registrationResponse = await _authService.Register(registerRequest);
-        //    if (!registrationResponse.IsSuccess)
-        //        return BadRequest(registrationResponse.Message);
-
-        //    return CreatedAtAction(nameof(Login), new { username = registerRequest.Username }, registrationResponse.Data);
-        //}
     }
 }

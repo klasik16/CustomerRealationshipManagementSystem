@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 {
@@ -42,6 +43,6 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
         // Navigation properties
         public virtual ICollection<UserRole>? UserRoles { get; set; }
         public virtual Address? Address { get; set; }
-        public virtual ProfilePicture? ProfilePicture { get; set; }
+        public virtual IFormFile? ProfilePicture { get; set; }
     }
 }

@@ -16,19 +16,15 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<User>> GetUsers()
-    {
-        var users = _userService.GetUsers();
-        return Ok(users);
-    }
-
     [HttpGet("{id}")]
     public ActionResult<User> GetUserById(int id)
     {
         var user = _userService.GetUserById(id);
+
         if (user == null)
+        {
             return NotFound();
+        }
 
         return Ok(user);
     }
@@ -43,8 +39,35 @@ public class UserController : ControllerBase
         return Ok("Image uploaded successfully");
     }
 
-    public ActionResult<User> CreateUser(UserSignupDTO userSignupDto)
+    /// <summary>
+    /// Create a new user and upload an image.
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///     POST /api/user
+    ///     {
+    ///         "username": "string",
+    ///         "password": "string",
+    ///         "firstName": "string",
+    ///         "lastName": "string",
+    ///         "personalIdentificationNumber": "string",
+    ///         "email": "string",
+    ///         "phoneNumber": "string",
+    ///         "address.city": "string",
+    ///         "address.street": "string",
+    ///         "address.buildingNumber": "string",
+    ///         "address.apartmentNumber": "string"
+    ///     }
+    ///     (multipart/form-data - attach image file)
+    /// </remarks>
+    /// <param name="userSignupDto">The user signup data.</param>
+    /// <returns>The created user.</returns>
+    [HttpPost]
+    public ActionResult<User> CreateUser(
+        [FromForm] UserSignupDTO userSignupDto)
     {
+        // Retrieve the image data from the profilePicture parameter if needed
+
         var user = new User
         {
             Username = userSignupDto.Username,
