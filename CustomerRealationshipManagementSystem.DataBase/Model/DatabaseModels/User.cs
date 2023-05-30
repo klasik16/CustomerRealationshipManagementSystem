@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 {
@@ -8,7 +9,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -41,9 +42,8 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
         public string? PhoneNumber { get; set; }
 
         // Navigation properties
-        public virtual ICollection<UserRole>? UserRoles { get; set; }
-        public virtual Address? Address { get; set; }
-       // public virtual IFormFile? ProfilePicture { get; set; }
-
+        public Role UserRoles { get; set; }
+        public Address? Address { get; set; }
+        public ProfilePicture? ProfilePicture { get; set; }
     }
 }

@@ -27,9 +27,9 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DTO
         public string? PhoneNumber { get; set; }
         [Required]
         public AddressDTO? Address { get; set; }
-        //[Required]
-        //[MaxFileSize(5 * 1024 * 1024)]
-       // [AllowedExtensions(new string[] { ".png", ".jpg",".jpeg" })]
-        //public IFormFile? ProfilePicture { get; set; }
+        [Required]
+        [MaxFileSize(5 * 1024 * 1024)]
+        [AllowedExtensions(new string[] { ".png", ".jpg", ".jpeg" })]
+        public IFormFile? ProfilePicture { get; set; }
     }
 }

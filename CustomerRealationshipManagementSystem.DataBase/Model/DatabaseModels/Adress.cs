@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
     public class Address
     {
         [Key]
-        public int User { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(100)]
         public string? City { get; set; }
@@ -23,5 +24,8 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
 
         [MaxLength(10)]
         public string? ApartmentNumber { get; set; }
+
+        // Navigation property
+        public User User { get; set; }
     }
 }

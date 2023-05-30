@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,13 +11,11 @@ namespace CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels
     public class Role
     {
         [Key]
-        public int RoleId { get; set; }
+        public Guid Id { get; set; }
+        public string? UserRole { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public required string Name { get; set; }
+        // Navigation property
+        //public User User { get; set; }
 
-        // Navigation properties
-        public virtual ICollection<UserRole>? UserRoles { get; set; }
     }
 }

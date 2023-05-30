@@ -1,43 +1,32 @@
-﻿using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
+﻿using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
-
-    public AuthService(IUserService userService, IJwtService jwtService)
+    private readonly IRoleService _jroleService;
+    public AuthService(IUserService userService, IJwtService jwtService, IRoleService roleService)
     {
         _userService = userService;
         _jwtService = jwtService;
+        _jroleService = roleService;
     }
 
-    public string Authenticate(string username, string password)
+    public async Task<string> AuthenticateUser(string username, string password)
     {
-        // Authenticate the user based on the provided username and password
-        var user = _userService.GetUserByUsername(username);
-        if (user == null || user.Password != password)
+        // Authenticate the user credentials
+        User user = await _userService.GetUserByUsernameAndPassword(username, password);
+        if (user == null)
         {
-            return "5"; // Authentication failed
+            throw new Exception("Invalid username or password");
         }
 
-        // Generate JWT token
-        var token = _jwtService.GenerateToken(user);
-
-        return token; // Return the generated token
-    }
-
-    public LoginResponseDTO Login(string username, string password)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool IAuthService.Authenticate(string username, string password)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<LoginResponseDTO> IAuthService.Login(string username, string password)
-    {
-        throw new NotImplementedException();
+        // Generate a JWT token
+        string token = _jwtService.GenerateJwtToken(user);
+        return token;
     }
 }

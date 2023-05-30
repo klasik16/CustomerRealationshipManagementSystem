@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CustomerRealationshipManagementSystem.DataBase.Model.DTO;
+using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
 
 namespace CustomerRealationshipManagementSystem.Controllers
 {
@@ -9,22 +10,27 @@ namespace CustomerRealationshipManagementSystem.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IJwtService _jwtService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IJwtService jwtService)
         {
             _authService = authService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponseDTO>> Login(UserLoginDTO loginRequest)
+        public async Task<IActionResult> Login([FromBody] UserLogin loginDto)
         {
-            var loginResponse = await _authService.Login(loginRequest.Username, loginRequest.Password);
-            if (loginResponse == null)
+            try
             {
-                return Unauthorized();
+                string token = await _authService.AuthenticateUser(loginDto.Username, loginDto.Password);
+                
+                return Ok(new { Token = token });
             }
-
-            return Ok(loginResponse);
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
         }
     }
 }

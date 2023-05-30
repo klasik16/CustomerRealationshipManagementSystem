@@ -1,4 +1,5 @@
-﻿using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+﻿using CustomerRealationshipManagementSystem.DataBase;
+using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,5 +45,10 @@ public class UserRepository : IUserRepository
     {
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
+    }
+
+    public User GetUser(string username)
+    {
+        throw new NotImplementedException();
     }
 }

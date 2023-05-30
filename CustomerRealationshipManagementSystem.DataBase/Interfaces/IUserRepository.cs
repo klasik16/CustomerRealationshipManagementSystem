@@ -10,4 +10,5 @@ public interface IUserRepository
     Task CreateUser(User user);
     Task UpdateUser(User user);
     Task DeleteUser(User user);
+    User GetUser(string username);
 }

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CustomerRealationshipManagementSystem.DataBase.Model;
 using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+using Microsoft.EntityFrameworkCore;
 
 public class RoleService : IRoleService
 {
@@ -12,37 +14,27 @@ public class RoleService : IRoleService
         _roleRepository = roleRepository;
     }
 
-    public async Task<IEnumerable<Role>> GetAllRoles()
+    public Role GetRoleById(Guid id)
     {
-        return await _roleRepository.GetAllRoles();
+        return _roleRepository.GetRoleById(id);
     }
 
-    public async Task<Role> GetRoleById(int roleId)
+    public async Task<Role> CreateRoleAsync(Role role)
     {
-        return await _roleRepository.GetRoleById(roleId);
+        return await _roleRepository.CreateRole(role);
     }
 
-    public async Task<Role> GetRoleByName(string roleName)
+    public void UpdateRole(Role role)
     {
-        return await _roleRepository.GetRoleByName(roleName);
+        _roleRepository.UpdateRole(role);
     }
 
-    public async Task CreateRole(Role role)
+    public async Task<List<Role>>  GetAllRoles()
     {
-        await _roleRepository.CreateRole(role);
+        return (List<Role>)await _roleRepository.GetAllRoles();
     }
 
-    public async Task UpdateRole(Role role)
-    {
-        await _roleRepository.UpdateRole(role);
-    }
-
-    public async Task DeleteRole(Role role)
-    {
-        await _roleRepository.DeleteRole(role);
-    }
-
-    public Task UpdateRole(int id, Role role)
+    public object UpdateRole(Guid id, Role role)
     {
         throw new NotImplementedException();
     }
@@ -52,7 +44,17 @@ public class RoleService : IRoleService
         throw new NotImplementedException();
     }
 
+    public object GetRoleById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public bool DeleteRole(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object CreateRole(Role role)
     {
         throw new NotImplementedException();
     }

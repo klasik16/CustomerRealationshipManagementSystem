@@ -19,14 +19,9 @@ public class RoleRepository : IRoleRepository
         return await _dbContext.Roles.ToListAsync();
     }
 
-    public async Task<Role> GetRoleById(int roleId)
-    {
-        return await _dbContext.Roles.FindAsync(roleId);
-    }
-
     public async Task<Role> GetRoleByName(string roleName)
     {
-        return await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+        return await _dbContext.Roles.FirstOrDefaultAsync(r => r.UserRole == roleName);
     }
 
     public async Task CreateRole(Role role)
@@ -45,5 +40,21 @@ public class RoleRepository : IRoleRepository
     {
         _dbContext.Roles.Remove(role);
         await _dbContext.SaveChangesAsync();
+    }
+
+    Task<Role> IRoleRepository.CreateRole(Role role)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteRole(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Role GetRoleById(Guid id)
+    {
+            var role = _dbContext.Roles.FirstOrDefault(r => r.Id == id);
+        return role;
     }
 }

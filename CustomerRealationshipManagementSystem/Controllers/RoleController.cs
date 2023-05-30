@@ -20,7 +20,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Role> GetRoleById(int id)
+    public ActionResult<Role> GetRoleById(Guid id)
     {
         var role = _roleService.GetRoleById(id);
         if (role == null)
@@ -37,7 +37,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateRole(int id, Role role)
+    public IActionResult UpdateRole(Guid id, Role role)
     {
         var updatedRole = _roleService.UpdateRole(id, role);
         if (updatedRole == null)

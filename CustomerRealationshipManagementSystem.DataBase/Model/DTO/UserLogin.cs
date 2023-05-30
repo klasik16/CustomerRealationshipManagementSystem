@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CustomerRealationshipManagementSystem.DataBase.Model.DTO
 {
-    public class UserLoginDTO
+    public class UserLogin
     {
         [Required]
         public required string Username { get; set; }

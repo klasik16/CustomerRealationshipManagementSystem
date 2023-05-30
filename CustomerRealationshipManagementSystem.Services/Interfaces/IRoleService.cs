@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 
 public interface IRoleService
 {
-    Task<IEnumerable<Role>> GetAllRoles();
-    Task<Role> GetRoleById(int roleId);
-    Task<Role> GetRoleByName(string roleName);
-    Task CreateRole(Role role);
-    Task UpdateRole(int id, Role role);
-    Task DeleteRole(Role role);
+    // Role operations
+    public Role GetRoleById(Guid id);
+    public Task<Role> CreateRoleAsync(Role role);
+    object UpdateRole(Guid id, Role role);
     object GetRoles();
     bool DeleteRole(int id);
+    object CreateRole(Role role);
 }

@@ -2,6 +2,5 @@
 
 public interface IAuthService
 {
-    bool Authenticate(string username, string password);
-    Task<LoginResponseDTO> Login(string username, string password);
+    Task<string> AuthenticateUser(string username, string password);
 }

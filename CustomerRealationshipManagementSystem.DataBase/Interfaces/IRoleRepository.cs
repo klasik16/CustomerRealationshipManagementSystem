@@ -5,10 +5,13 @@ using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
 
 public interface IRoleRepository
 {
-    Task<IEnumerable<Role>> GetAllRoles();
-    Task<Role> GetRoleById(int roleId);
-    Task<Role> GetRoleByName(string roleName);
-    Task CreateRole(Role role);
-    Task UpdateRole(Role role);
-    Task DeleteRole(Role role);
+    Task<Role> CreateRole(Role role);
+    public Task<IEnumerable<Role>> GetAllRoles();
+    public Role GetRoleById(Guid id);
+
+    // public Task<Role> GetRoleById(Guid roleId);
+    //public Task<Role> CreateRole(Role role);
+    public Task UpdateRole(Role role);
+    //public Task DeleteRole(Role role);
+    //void DeleteRole(Guid id);
 }

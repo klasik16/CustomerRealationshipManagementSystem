@@ -1,5 +1,10 @@
-﻿using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+﻿using CustomerRealationshipManagementSystem.DataBase;
+using CustomerRealationshipManagementSystem.DataBase.Model.DatabaseModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 
 public class UserService : IUserService
 {
@@ -10,68 +15,165 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
-    public IEnumerable<User> GetUsers()
-    {
-        return _dbContext.Users.Include(u => u.Address).ToList();
-    }
-
-    public User GetUserById(int id)
-    {
-        return _dbContext.Users.Include(u => u.Address).FirstOrDefault(u => u.UserId == id);
-    }
-
-    public User CreateUser(User user)
+    public async Task<User> CreateUserAsync(User user)
     {
         _dbContext.Users.Add(user);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         return user;
     }
 
-    public User UpdateUser(int id, User user)
+    public async Task<byte[]> ConvertToByteArrayAsync(IFormFile profilePicture)
     {
-        var existingUser = _dbContext.Users.FirstOrDefault(u => u.UserId == id);
-        if (existingUser != null)
+        using (var memoryStream = new MemoryStream())
         {
-            existingUser.Username = user.Username;
-            existingUser.Password = user.Password;
-            existingUser.FirstName = user.FirstName;
-            existingUser.LastName = user.LastName;
-            existingUser.PersonalIdentificationNumber = user.PersonalIdentificationNumber;
-            existingUser.Email = user.Email;
-            existingUser.PhoneNumber = user.PhoneNumber;
-
-            existingUser.Address.City = user.Address.City;
-            existingUser.Address.Street = user.Address.Street;
-            existingUser.Address.BuildingNumber = user.Address.BuildingNumber;
-            existingUser.Address.ApartmentNumber = user.Address.ApartmentNumber;
-
-            _dbContext.SaveChanges();
-            return existingUser;
+            await profilePicture.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
         }
-
-        return null;
     }
 
-    public bool DeleteUser(int id)
+    public async Task<bool> UpdateUserName(Guid userId, string username)
     {
-        var user = _dbContext.Users.FirstOrDefault(u => u.UserId == id);
-        if (user != null)
-        {
-            _dbContext.Users.Remove(user);
-            _dbContext.SaveChanges();
-            return true;
-        }
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
 
-        return false;
+        user.Username = username;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdatePassword(Guid userId, string password)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.Password = password;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateFirstName(Guid userId, string firstName)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.FirstName = firstName;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateLastName(Guid userId, string lastName)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.LastName = lastName;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+
+    public async Task<bool> UpdatePersonalIdentificationNumber(Guid userId, string personalIdentificationNumber)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.PersonalIdentificationNumber = personalIdentificationNumber;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateEmail(Guid userId, string email)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.Email = email;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdatePhoneNumber(Guid userId, string phoneNumber)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.PhoneNumber = phoneNumber;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateCity(Guid addressId, string city)
+    {
+        var address = await _dbContext.Addresses.FindAsync(addressId);
+        if (address == null)
+            return false;
+
+        address.City = city;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateUserStreet(Guid addressId, string street)
+    {
+        var address = await _dbContext.Addresses.FindAsync(addressId);
+        if (address == null)
+            return false;
+
+        address.Street = street;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateBuildingNumber(Guid addressId, string buildingNumber)
+    {
+        var address = await _dbContext.Addresses.FindAsync(addressId);
+        if (address == null)
+            return false;
+
+        address.BuildingNumber = buildingNumber;
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateApartmentNumber(Guid addressId, string apartmentNumber)
+    {
+        var address = await _dbContext.Addresses.FindAsync(addressId);
+        if (address == null)
+            return false;
+
+        address.ApartmentNumber = apartmentNumber;
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
     public User GetUserByUsername(string username)
     {
         throw new NotImplementedException();
     }
-
-    public Task<User> Authenticate(string username, string password)
+    public async Task<User> GetUserByUsernameAndPassword(string username, string password)
     {
-        throw new NotImplementedException();
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+        // Verify the password
+        if (user != null && VerifyPassword(password, user.Password))
+        {
+            return user;
+        }
+
+        return null;
+    }
+
+    private bool VerifyPassword(string password, string hashedPassword)
+    {
+        // Verify the password using bcrypt's Verify method
+        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
     }
 }
+
